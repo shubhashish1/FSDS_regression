@@ -26,3 +26,28 @@ def save_object(file_path, obj): # file_path for pickle file path, obj is the pr
     except Exception as e:
         logging.error("pickle file didn't create due to : ".format(str(e)))
         raise CustomException(e,sys)
+
+
+def evaluate_model(X_train,y_train,X_test,y_test,models):
+    try:
+        report = {}
+        for i in range(len(models)):
+            model = list(models.values())[i]
+            # Train the model
+            model.fit(X_train,y_train)
+
+            #Predict train data
+            y_train_pred = model.predict(X_train)
+
+            #Predict Test the data
+            y_test_pred = model.predict(X_test)
+
+            # Get r2 score for train and test data
+            train_model_score = r2_score(y_train,y_train_pred)
+            test_model_score = r2_score(y_test,y_test_pred)
+            report[list(models.keys())[i]] = test_model_score # Key value pair
+        return report
+
+    except Exception as e:
+        raise CustomException(e,sys)
+        logging.error(f"Model evaluation failed with error : {str(e)}")
