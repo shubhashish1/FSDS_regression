@@ -119,11 +119,16 @@ class DataTransformation:
 
             logging.info("preprocessor pickle object created and saved in artifacts folder")
 
+            train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
+            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+
+            # In train_arr we are combining the training X and y togethere in to an array
+
             logging.info("applying preprocessing to training and testing data")
 
             return (
-                input_feature_train_arr,
-                input_feature_test_arr,
+                train_arr,
+                test_arr,
                 self.data_transformation_config.preprocessor_obj_file_path
             )
 
